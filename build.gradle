@@ -1,0 +1,19 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
+
+application {
+    mainClassName = 'info.astralab.ccurve.Main'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.gillius:jfxutils:1.0'
+}
+
