@@ -34,6 +34,7 @@ public class Controller {
     @FXML private CheckBox logLogBox;
     @FXML private CheckBox linLogBox;
     @FXML private CheckBox logLinBox;
+    @FXML private TextField stepField;
     private final StableTicksAxis xAxis = new StableTicksAxis();
     private final StableTicksAxis yAxis = new StableTicksAxis();
     private final LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
@@ -105,14 +106,15 @@ public class Controller {
     private int findSector(float value, float[] values, float[] percentages) {
         int sector;
         int size = percentages.length;
-        // возрастание проверяю В ДРУГОМ МАССИВЕ. то, что убывают времена до 0 не показатель, непонятно брать последний 0 или нет.
-        int n = values[size - 3] < values[size - 2] && values[size - 1] == 0 ? size - 2 : size - 1; // если 4 возрастающих, то последний 0 не беру. если убывающие или 5 возрастающих, то беру все.
+        // если 4 возрастающих, то последний 0 не беру. если убывающие или 5 возрастающих, то беру все.
+        int n = values[size - 3] < values[size - 2] && values[size - 1] == 0 ? size - 2 : size - 1;
         for (sector = 1; sector < n; sector++) { // начинаем с 1, потому что дальше считаю прямую между sector-1 и sector
             // Не уверен возрастающий или убывающий порядок, проверяю на попадание в обоих случаях
             if ((value >= values[sector-1] && value <= values[sector]) || (value >= values[sector] && value <= values[sector-1]))
                 break;
         }
-        if (sector == n && values[0] > values[n] && value > values[0] || value < values[0]) { // если возрастающие и за пределами секторов, то проверить, вдруг больше первой точки. тогда вернуться в первый сектор.
+        // если возрастающие и за пределами секторов, то проверить, вдруг больше первой точки. тогда вернуться в первый сектор.
+        if (sector == n && values[0] > values[n] && value > values[0] || value < values[0]) {
             sector = 1;
         }
         return sector;
@@ -155,7 +157,7 @@ public class Controller {
         }
         if (concentration < 0) concentration = 0;
 
-        return BigDecimal.valueOf(concentration).setScale(2, RoundingMode.HALF_UP).floatValue();
+        return BigDecimal.valueOf(concentration).setScale(3, RoundingMode.HALF_UP).floatValue();
     }
 
     private float calculateDotOnLine(float x, float x0, float x1, float y0, float y1) {
@@ -182,30 +184,34 @@ public class Controller {
         chart.getData().add(linLogSeries);
         chart.getData().add(logLinSeries);
         ArrayList<Node> points = new ArrayList<>();
-        for (int i = 5; i < 70; i++) {
+        float scaled_x = Float.parseFloat(stepField.getText());
+        float step = Float.parseFloat(stepField.getText());
+        float last = times[4] == 0 ? times[3] : times[4];
+        for (int i = 1; scaled_x < last + 10 * step; i++) {
+            scaled_x = i * step;
             float value;
             if (linLinBox.isSelected()) {
-                value = calculateConcentration(Axis.LIN_LIN, i, times, percentages);
-                linLinSeries.getData().add(new XYChart.Data<>(i, value));
+                value = calculateConcentration(Axis.LIN_LIN, scaled_x, times, percentages);
+                linLinSeries.getData().add(new XYChart.Data<>(scaled_x, value));
             }
             if (logLogBox.isSelected()) {
-                value = calculateConcentration(Axis.LOG_LOG, i, times, percentages);
-                logLogSeries.getData().add(new XYChart.Data<>(i, value));
+                value = calculateConcentration(Axis.LOG_LOG, scaled_x, times, percentages);
+                logLogSeries.getData().add(new XYChart.Data<>(scaled_x, value));
             }
             if (linLogBox.isSelected()) {
-                value = calculateConcentration(Axis.LIN_LOG, i, times, percentages);
-                linLogSeries.getData().add(new XYChart.Data<>(i, value));
+                value = calculateConcentration(Axis.LIN_LOG, scaled_x, times, percentages);
+                linLogSeries.getData().add(new XYChart.Data<>(scaled_x, value));
             }
             if (logLinBox.isSelected()) {
-                value = calculateConcentration(Axis.LOG_LIN, i, times, percentages);
-                logLinSeries.getData().add(new XYChart.Data<>(i, value));
+                value = calculateConcentration(Axis.LOG_LIN, scaled_x, times, percentages);
+                logLinSeries.getData().add(new XYChart.Data<>(scaled_x, value));
             }
         }
         XYChart.Series<Number, Number> controls = new XYChart.Series<>();
         controls.setName("ctrl");
         chart.getData().add(controls);
         for (int i = 0; i < times.length; i++) {
-            if (times[i] == 0 || times[i] == 0.1 || percentages[i] == 0 || percentages[i] == 0.1)
+            if (times[i] == 0 || percentages[i] == 0)
                 break;
             XYChart.Data<Number, Number> data = new XYChart.Data<>(times[i], percentages[i]);
             controls.getData().add(data);
@@ -218,8 +224,8 @@ public class Controller {
                 double yAxisLoc = yAxis.sceneToLocal(pointInScene).getY();
                 Number x = xAxis.getValueForDisplay(xAxisLoc);
                 Number y = yAxis.getValueForDisplay(yAxisLoc);
-                BigDecimal bigX = BigDecimal.valueOf(x.floatValue()).setScale(2, RoundingMode.HALF_UP);
-                BigDecimal bigY = BigDecimal.valueOf(y.floatValue()).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal bigX = BigDecimal.valueOf(x.floatValue()).setScale(3, RoundingMode.HALF_UP);
+                BigDecimal bigY = BigDecimal.valueOf(y.floatValue()).setScale(3, RoundingMode.HALF_UP);
                 data.setXValue(bigX.floatValue());
                 data.setYValue(bigY.floatValue());
                 int controlPointIndex = points.indexOf(node);

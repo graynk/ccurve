@@ -12,47 +12,41 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.astralab.ccurve.Controller">
    <bottom>
-      <GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308"
-                maxWidth="1.7976931348623157E308" vgap="10" BorderPane.alignment="CENTER">
+      <GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10" BorderPane.alignment="CENTER">
          <rowConstraints>
-            <RowConstraints/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+            <RowConstraints />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
          </rowConstraints>
          <columnConstraints>
-            <ColumnConstraints/>
-            <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints maxWidth="229.0" minWidth="10.0" prefWidth="153.0"/>
+            <ColumnConstraints />
+            <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints maxWidth="229.0" minWidth="10.0" prefWidth="153.0" />
          </columnConstraints>
          <padding>
-            <Insets bottom="10.0" right="10.0"/>
+            <Insets bottom="10.0" right="10.0" />
          </padding>
-         <TextField fx:id="percent1" text="6.5" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-         <TextField fx:id="percent2" text="4.7" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-         <TextField fx:id="percent3" text="3.2" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-         <TextField fx:id="percent4" text="2.2" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
-         <TextField fx:id="percent5" text="1" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
-         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#go" prefHeight="70.0"
-                 prefWidth="153.0" text="Go" GridPane.columnIndex="6" GridPane.halignment="CENTER"
-                 GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2"/>
-         <TextField fx:id="time1" text="7.2" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-         <TextField fx:id="time2" text="11.8" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-         <TextField fx:id="time3" text="20.1" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
-         <TextField fx:id="time4" text="40.8" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
-         <TextField fx:id="time5" text="59.1" GridPane.columnIndex="5" GridPane.rowIndex="2"/>
-         <CheckBox fx:id="linLinBox" mnemonicParsing="false" selected="true" text="lin/lin" GridPane.columnIndex="1"
-                   GridPane.rowIndex="3"/>
-         <CheckBox fx:id="logLogBox" mnemonicParsing="false" selected="true" text="log/log" GridPane.columnIndex="2"
-                   GridPane.rowIndex="3"/>
-         <CheckBox fx:id="linLogBox" mnemonicParsing="false" selected="true" text="lin/log" GridPane.columnIndex="3"
-                   GridPane.rowIndex="3"/>
-         <CheckBox fx:id="logLinBox" mnemonicParsing="false" selected="true" text="log/lin" GridPane.columnIndex="4"
-                   GridPane.rowIndex="3"/>
+         <TextField fx:id="percent1" promptText="К1" text="6.5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <TextField fx:id="percent2" promptText="К2" text="4.7" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         <TextField fx:id="percent3" promptText="К3" text="3.2" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+         <TextField fx:id="percent4" promptText="К4" text="2.2" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+         <TextField fx:id="percent5" promptText="К5" text="1" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+         <Button defaultButton="true" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#go" prefHeight="70.0" prefWidth="153.0" text="Go" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+         <TextField fx:id="time1" promptText="Т1" text="7.2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <TextField fx:id="time2" promptText="Т2" text="11.8" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+         <TextField fx:id="time3" promptText="Т3" text="20.1" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+         <TextField fx:id="time4" promptText="Т4" text="40.8" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+         <TextField fx:id="time5" promptText="Т5" text="59.1" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+         <CheckBox fx:id="linLinBox" mnemonicParsing="false" selected="true" text="lin/lin" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         <CheckBox fx:id="logLogBox" mnemonicParsing="false" selected="true" text="log/log" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+         <CheckBox fx:id="linLogBox" mnemonicParsing="false" selected="true" text="lin/log" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+         <CheckBox fx:id="logLinBox" mnemonicParsing="false" selected="true" text="log/lin" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+         <TextField fx:id="stepField" promptText="Step" text="1" GridPane.columnIndex="5" GridPane.rowIndex="3" />
       </GridPane>
    </bottom>
    <center>
