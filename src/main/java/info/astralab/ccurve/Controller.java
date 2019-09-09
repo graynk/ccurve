@@ -34,7 +34,10 @@ public class Controller {
     @FXML private CheckBox logLogBox;
     @FXML private CheckBox linLogBox;
     @FXML private CheckBox logLinBox;
+    @FXML private CheckBox hyperbolaBox;
     @FXML private TextField stepField;
+    @FXML private TextField maxXField;
+    @FXML private TextField maxYField;
     private final StableTicksAxis xAxis = new StableTicksAxis();
     private final StableTicksAxis yAxis = new StableTicksAxis();
     private final LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
@@ -128,16 +131,21 @@ public class Controller {
         switch (selectedAxis) { // оси могут быть логарифмическими или линейными
             case LOG_LOG:
             default:
+                // преобразовываю формулы с учетом разности логарифмов
                 concentration =
                         Math.exp(
-                                Math.log(time / times[sector - 1]) * // преобразовываю формулы с учетом разности логарифмов
+                                Math.log(time / times[sector - 1]) *
                                         Math.log(percentages[sector] / percentages[sector - 1]) /
                                         Math.log(times[sector] / times[sector - 1]) +
                                         Math.log(percentages[sector - 1])
                         );
                 break;
             case LIN_LIN:
-                concentration = calculateDotOnLine(time, times[sector-1], times[sector], percentages[sector-1], percentages[sector]);
+                concentration = calculateDotOnLine(time,
+                        times[sector-1],
+                        times[sector],
+                        percentages[sector-1],
+                        percentages[sector]);
                 break;
             case LIN_LOG:
                 concentration =
@@ -167,6 +175,8 @@ public class Controller {
     @FXML
     private void go() {
         chart.getData().clear();
+        setUpperBound(maxXField, xAxis);
+        setUpperBound(maxYField, yAxis);
         float[] times = new float[] { Float.parseFloat(time1.getText()), Float.parseFloat(time2.getText()),
                 Float.parseFloat(time3.getText()), Float.parseFloat(time4.getText()), Float.parseFloat(time5.getText()) };
         float[] percentages = new float[] { Float.parseFloat(percent1.getText()), Float.parseFloat(percent2.getText()),
@@ -179,10 +189,13 @@ public class Controller {
         linLogSeries.setName("lin/log");
         XYChart.Series<Number, Number> logLinSeries = new XYChart.Series<>();
         logLinSeries.setName("log/lin");
+        XYChart.Series<Number, Number> hyperbolaSeries = new XYChart.Series<>();
+        hyperbolaSeries.setName("x₁y₁/x");
         chart.getData().add(linLinSeries);
         chart.getData().add(logLogSeries);
         chart.getData().add(linLogSeries);
         chart.getData().add(logLinSeries);
+        chart.getData().add(hyperbolaSeries);
         ArrayList<Node> points = new ArrayList<>();
         float scaled_x = Float.parseFloat(stepField.getText());
         float step = Float.parseFloat(stepField.getText());
@@ -205,6 +218,10 @@ public class Controller {
             if (logLinBox.isSelected()) {
                 value = calculateConcentration(Axis.LOG_LIN, scaled_x, times, percentages);
                 logLinSeries.getData().add(new XYChart.Data<>(scaled_x, value));
+            }
+            if (hyperbolaBox.isSelected()) {
+                value = percentages[0]*times[0]/scaled_x;
+                hyperbolaSeries.getData().add(new XYChart.Data<>(scaled_x, value));
             }
         }
         XYChart.Series<Number, Number> controls = new XYChart.Series<>();
@@ -233,6 +250,23 @@ public class Controller {
                 percentList[controlPointIndex].setText(bigY.toString());
             });
             node.setOnMouseReleased(e -> go());
+        }
+    }
+
+    private void setUpperBound(TextField field, StableTicksAxis axis) {
+        String maxString = field.getText();
+        if (maxString.isEmpty()) {
+            axis.setAutoRanging(true);
+        } else {
+            axis.setAutoRanging(false);
+            try {
+                float max = Float.parseFloat(maxString);
+                if (max > 0) {
+                    axis.setUpperBound(max);
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
